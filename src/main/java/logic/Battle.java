@@ -6,14 +6,15 @@ import services.BattleService;
 import services.PrinterService;
 
 public class Battle {
-    public void startBattle(PlayerCharacter playerCharacter, EnemyCharacter enemyCharacter) {
+    public void startBattleLoop(PlayerCharacter playerCharacter, EnemyCharacter enemyCharacter) {
         boolean battleOver = false;
         PrinterService printerService = new PrinterService();
         BattleService battleService = new BattleService(playerCharacter, enemyCharacter);
-        int turn = 0;
+
 
 
         while (!battleOver) {
+            int turn = 0;
             printerService.printOpenerHeading(enemyCharacter);
             boolean inTurn = true;
             while (inTurn) {
@@ -27,6 +28,8 @@ public class Battle {
 
                     case 2:
                         // need magic code here
+                        turn++;
+                        break;
 
                     case 3:
                         playerDefended = true;
@@ -37,11 +40,35 @@ public class Battle {
 
                     case 4:
                         // need item code here
+                        System.out.println("What kind of item do you wish to use?");
+                        System.out.println("  1. Damage Item");
+                        System.out.println("  2. Healing Item");
+                        int input = printerService.getUserNumberInput();
+                        if(input == 1) {
+
+                        } if(input == 2) {
+
+                    } else {
+                        System.out.println("Not a valid selection!");
+                    }
 
                     case 5:
                         // need run attempt code here
                 }
+                printerService.printHeading("Turn over!  " + playerCharacter.getName() + ": " + playerCharacter.getCurrentHp() + "HP left");
+                printerService.anythingToContinue();
+                inTurn = false;
             }
+            if(checkIfBattleOver(playerCharacter, enemyCharacter)) {
+                battleOver = true;
+            }
+        }
+    }
+    private static boolean checkIfBattleOver(PlayerCharacter player, EnemyCharacter enemy) {
+        if(player.getCurrentHp() <= 0 || enemy.getCurrentHp() <= 0) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

@@ -7,6 +7,7 @@ public class DamageItem {
     private boolean hurtsAll;
     private StatusEffect effectCaused;
     private int effectChance;
+    private int turnsAffected;
     private Long damage;
     private String description;
 
@@ -36,6 +37,14 @@ public class DamageItem {
 
     public int getEffectChance() {
         return effectChance;
+    }
+
+    public int getTurnsAffected() {
+        return turnsAffected;
+    }
+
+    public void setTurnsAffected(int turnsAffected) {
+        this.turnsAffected = turnsAffected;
     }
 
     public void setEffectChance(int effectChance) {

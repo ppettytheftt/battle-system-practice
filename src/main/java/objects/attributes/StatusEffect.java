@@ -3,6 +3,7 @@ package objects.attributes;
 public class StatusEffect {
     private String name;
     private String description;
+    private int turnToEndOn;
 
     public String getName() {
         return name;
@@ -18,5 +19,13 @@ public class StatusEffect {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getTurnToEndOn() {
+        return turnToEndOn;
+    }
+
+    public void setTurnToEndOn(int turnToEndOn) {
+        this.turnToEndOn = turnToEndOn;
     }
 }

@@ -39,6 +39,7 @@ public class PrinterService {
     }
 
     public int getUserNumberInput() {
+        System.out.println("What do you choose?");
         Scanner scanner = new Scanner(System.in);
         return scanner.nextInt();
     }
