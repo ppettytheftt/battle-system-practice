@@ -2,7 +2,9 @@ package services;
 
 import objects.characters.EnemyCharacter;
 import objects.characters.PlayerCharacter;
+import objects.items.DamageItem;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class PrinterService {
@@ -44,9 +46,9 @@ public class PrinterService {
         return scanner.nextInt();
     }
 
-    public void printMenuChoices(String[] classArray) {
-        for (int i = 0; i < classArray.length; i++) {
-            System.out.println(i + 1 + " ) " + classArray[i]);
+    public void printDamageItemChoices(List<DamageItem> damageItems) {
+        for (int i = 0; i < damageItems.size(); i++) {
+            System.out.println(i + 1 + " ) " + damageItems.get(i));
         }
         lineSeparator(1);
     }

@@ -3,6 +3,7 @@ package logic;
 import objects.characters.EnemyCharacter;
 import objects.characters.PlayerCharacter;
 import services.BattleService;
+import services.DamageItemService;
 import services.PrinterService;
 
 public class Battle {
@@ -10,9 +11,9 @@ public class Battle {
         boolean battleOver = false;
         PrinterService printerService = new PrinterService();
         BattleService battleService = new BattleService(playerCharacter, enemyCharacter);
+        DamageItemService damageItemService = new DamageItemService(playerCharacter, enemyCharacter);
 
-
-
+        // main battle loop
         while (!battleOver) {
             int turn = 0;
             printerService.printOpenerHeading(enemyCharacter);
@@ -39,33 +40,44 @@ public class Battle {
                         break;
 
                     case 4:
-                        // need item code here
                         System.out.println("What kind of item do you wish to use?");
                         System.out.println("  1. Damage Item");
                         System.out.println("  2. Healing Item");
                         int input = printerService.getUserNumberInput();
-                        if(input == 1) {
+                        if (input == 1) {
+                            boolean wasSuccessfullyAffectedByStatus = false;
+                            printerService.printDamageItemChoices(playerCharacter.getDamageItems());
+                            int playerChoice = printerService.getUserNumberInput();
 
-                        } if(input == 2) {
+                            damageItemService.handleDamageItemEnemyStatusEffect(playerCharacter.getDamageItems().get(playerChoice), turn);
 
-                    } else {
-                        System.out.println("Not a valid selection!");
-                    }
+                        }
+                        if (input == 2) {
+                            // healing item code here
+                        } else {
+                            System.out.println("Not a valid selection!");
+                        }
+                        turn++;
+                        break;
 
                     case 5:
                         // need run attempt code here
+                        turn++;
+                        break;
                 }
-                printerService.printHeading("Turn over!  " + playerCharacter.getName() + ": " + playerCharacter.getCurrentHp() + "HP left");
+                printerService.printHeading("Turn over!  " + playerCharacter.getName() + ": " + playerCharacter.getCurrentHp() + "HP left\n" +
+                        "Enemy " + enemyCharacter.getName() + ": " + enemyCharacter.getCurrentHp() + "HP left");
                 printerService.anythingToContinue();
                 inTurn = false;
             }
-            if(checkIfBattleOver(playerCharacter, enemyCharacter)) {
+            if (checkIfBattleOver(playerCharacter, enemyCharacter)) {
                 battleOver = true;
             }
         }
     }
+
     private static boolean checkIfBattleOver(PlayerCharacter player, EnemyCharacter enemy) {
-        if(player.getCurrentHp() <= 0 || enemy.getCurrentHp() <= 0) {
+        if (player.getCurrentHp() <= 0 || enemy.getCurrentHp() <= 0) {
             return true;
         } else {
             return false;

@@ -45,5 +45,12 @@ public class DamageItemService {
         printerService.anythingToContinue();
     }
 
+    public boolean checkIfItemHits(DamageItem damageItem) {
+        // RNG logic for if a damage item hits or not using the hit chance from damage item
+        boolean hit = false;
+
+        return hit;
+    }
+
 
 }
