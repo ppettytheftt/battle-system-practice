@@ -5,7 +5,7 @@ import objects.attributes.ElementalType;
 public class Armor {
     private String name;
     private String armorType; // Maybe enum as well
-    private Long damage;
+    private Long defensePower;
     private boolean magicItem;
     private ElementalType elementType;
     private int durability;
@@ -27,12 +27,12 @@ public class Armor {
         this.armorType = armorType;
     }
 
-    public Long getDamage() {
-        return damage;
+    public Long getDefensePower() {
+        return defensePower;
     }
 
-    public void setDamage(Long damage) {
-        this.damage = damage;
+    public void setDefensePower(Long damage) {
+        this.defensePower = damage;
     }
 
     public boolean isMagicItem() {
