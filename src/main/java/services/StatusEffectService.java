@@ -17,34 +17,34 @@ public class StatusEffectService {
     }
 
     public void playerCheckStatus(int currentTurn) {
-        List<StatusEffect> playerStatusEffects = playerCharacter.getStatusEffects();
-        List<StatusEffect> newStatusList = new ArrayList<>();
-        int i;
-        for(i = 0; i < playerStatusEffects.size(); i++) {
-            StatusEffect currentStatusEffect = playerStatusEffects.get(i);
-            if(currentStatusEffect.getTurnToEndOn() != currentTurn) {
-                newStatusList.add(currentStatusEffect);
-            } else {
-                System.out.println("You are no longer affected by " + currentStatusEffect.getName() + "!");
-            }
-
-        }
-        playerCharacter.setStatusEffects(newStatusList);
+        handleCharacterStatusList(playerCharacter, currentTurn);
     }
 
     public void enemyCheckStatus(int currentTurn) {
-        List<StatusEffect> enemyStatusEffects = playerCharacter.getStatusEffects();
-        List<StatusEffect> newStatusList = new ArrayList<>();
+        handleEnemyStatusList(enemyCharacter, currentTurn);
+    }
+
+    private void handleCharacterStatusList(PlayerCharacter playerCharacter, int currentTurn) {
+        List<StatusEffect> newList = new ArrayList<>();
         int i;
-        for(i = 0; i < enemyStatusEffects.size(); i++) {
-            StatusEffect currentStatusEffect = enemyStatusEffects.get(i);
-            if(currentStatusEffect.getTurnToEndOn() != currentTurn) {
-                newStatusList.add(currentStatusEffect);
-            } else {
-                System.out.println(enemyCharacter.getName() + " is no longer affected by " + currentStatusEffect.getName() + "!");
+        for (i = 0; i < playerCharacter.getStatusEffects().size(); i++) {
+            StatusEffect currentStatus = playerCharacter.getStatusEffects().get(i);
+            if (currentStatus.getTurnToEndOn() != currentTurn) {
+                newList.add(currentStatus);
             }
-            
         }
-        enemyCharacter.setStatusEffects(newStatusList);
+        playerCharacter.setStatusEffects(newList);
+    }
+
+    private void handleEnemyStatusList(EnemyCharacter enemyCharacter, int currentTurn) {
+        List<StatusEffect> newList = new ArrayList<>();
+        int i;
+        for (i = 0; i < enemyCharacter.getStatusEffects().size(); i++) {
+            StatusEffect currentStatus = enemyCharacter.getStatusEffects().get(i);
+            if (currentStatus.getTurnToEndOn() != currentTurn) {
+                newList.add(currentStatus);
+            }
+        }
+        enemyCharacter.setStatusEffects(newList);
     }
 }

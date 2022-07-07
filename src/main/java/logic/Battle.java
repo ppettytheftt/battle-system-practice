@@ -2,9 +2,11 @@ package logic;
 
 import objects.characters.EnemyCharacter;
 import objects.characters.PlayerCharacter;
+import objects.items.DamageItem;
 import services.BattleService;
 import services.DamageItemService;
 import services.PrinterService;
+import services.StatusEffectService;
 
 public class Battle {
     public void startBattleLoop(PlayerCharacter playerCharacter, EnemyCharacter enemyCharacter) {
@@ -12,6 +14,7 @@ public class Battle {
         PrinterService printerService = new PrinterService();
         BattleService battleService = new BattleService(playerCharacter, enemyCharacter);
         DamageItemService damageItemService = new DamageItemService(playerCharacter, enemyCharacter);
+        StatusEffectService statusEffectService = new StatusEffectService(playerCharacter, enemyCharacter);
 
         // main battle loop
         while (!battleOver) {
@@ -19,24 +22,21 @@ public class Battle {
             printerService.printOpenerHeading(enemyCharacter);
             boolean inTurn = true;
             while (inTurn) {
+                // Player Turn
                 boolean playerDefended = false;
                 switch (printerService.printTurnStart(playerCharacter, enemyCharacter)) {
                     case 1:
                         battleService.playerAttack(playerCharacter, enemyCharacter);
-                        battleService.enemyAttack(playerCharacter, enemyCharacter, playerDefended);
-                        turn++;
                         break;
 
                     case 2:
                         // need magic code here
-                        turn++;
                         break;
 
                     case 3:
                         playerDefended = true;
                         System.out.println("You've taken a defensive stance!");
                         battleService.enemyAttack(playerCharacter, enemyCharacter, playerDefended);
-                        turn++;
                         break;
 
                     case 4:
@@ -45,28 +45,30 @@ public class Battle {
                         System.out.println("  2. Healing Item");
                         int input = printerService.getUserNumberInput();
                         if (input == 1) {
-                            boolean wasSuccessfullyAffectedByStatus = false;
                             printerService.printDamageItemChoices(playerCharacter.getDamageItems());
                             int playerChoice = printerService.getUserNumberInput();
 
-                            damageItemService.handleDamageItemEnemyStatusEffect(playerCharacter.getDamageItems().get(playerChoice), turn);
-
+                            DamageItem damageItemUsed = playerCharacter.getDamageItems().get(playerChoice);
+                            System.out.println("You've used " + damageItemUsed.getName() + "...");
+                            damageItemService.handleDamageItemFromPlayer(damageItemUsed, turn);
+                            printerService.anythingToContinue();
                         }
                         if (input == 2) {
                             // healing item code here
                         } else {
                             System.out.println("Not a valid selection!");
                         }
-                        turn++;
+                        statusEffectService.enemyCheckStatus(turn);
+                        statusEffectService.playerCheckStatus(turn);
                         break;
 
                     case 5:
                         // need run attempt code here
-                        turn++;
                         break;
                 }
                 printerService.printHeading("Turn over!  " + playerCharacter.getName() + ": " + playerCharacter.getCurrentHp() + "HP left\n" +
                         "Enemy " + enemyCharacter.getName() + ": " + enemyCharacter.getCurrentHp() + "HP left");
+                turn++;
                 printerService.anythingToContinue();
                 inTurn = false;
             }
